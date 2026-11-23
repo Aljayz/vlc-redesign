@@ -10,13 +10,14 @@
  * It keeps its colours on both grounds.
  *
  * Text becomes SVG paths through opentype.js, so the SVG needs no font and
- * renders the same in resvg and a browser. Bree Serif for the name and Lato for
- * the claim, at the sizes the other repos use.
+ * renders the same in resvg and a browser. Bree Serif Light for the name and
+ * Bree Light for the claim, the house typeface, at the sizes the other repos use.
  *
- * Deps (global): opentype.js, @resvg/resvg-js. Fonts are fetched to the OS temp dir.
+ * Deps (global): opentype.js, @resvg/resvg-js, and the house fonts as TTF in
+ * HOUSE_FONTS (default %LOCALAPPDATA%\halleluja-fonts).
  * Run: node .github/assets/gen-banner.mjs
  */
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
@@ -50,18 +51,10 @@ const THEMES = [
   { suffix: "-dark", bg: "#0d1117", name: "#e6edf3", claim: "#9aa4ad" },
 ];
 
-async function loadFont(file, url) {
-  const path = join(tmpdir(), file);
-  if (!existsSync(path)) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`font fetch ${res.status}`);
-    writeFileSync(path, Buffer.from(await res.arrayBuffer()));
-  }
-  return opentype.parse(readFileSync(path));
-}
-
-const font = await loadFont("VlcRedesign-BreeSerif-Regular.ttf", "https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf");
-const claimFont = await loadFont("VlcRedesign-Lato-Regular.ttf", "https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf");
+// The house typeface is licensed, so it is read from a local folder and never committed.
+const fonts = process.env.HOUSE_FONTS ?? join(process.env.LOCALAPPDATA ?? tmpdir(), "halleluja-fonts");
+const font = opentype.parse(readFileSync(join(fonts, "bree-serif-light.ttf")).buffer);
+const claimFont = opentype.parse(readFileSync(join(fonts, "bree-light.ttf")).buffer);
 
 const nameAsc = font.ascender * (nameSize / font.unitsPerEm);
 const nameDesc = -font.descender * (nameSize / font.unitsPerEm);
@@ -71,7 +64,7 @@ const nameBaseline = H / 2 - blockH / 2 + nameAsc;
 const claimBaseline = nameBaseline + nameDesc + lineGap + claimAsc;
 
 // Glyphs are laid out at the origin and moved with a transform: opentype.js can
-// return NaN coordinates for some Lato glyphs at large offsets.
+// return NaN coordinates for some glyphs at large offsets.
 const textPath = (f, text, size, x, y, fill) =>
   `<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" d="${f.getPath(text, 0, 0, size).toPathData(2)}" fill="${fill}"/>`;
 
