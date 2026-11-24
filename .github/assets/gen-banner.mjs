@@ -10,7 +10,7 @@
  * It keeps its colours on both grounds.
  *
  * Text becomes SVG paths through opentype.js, so the SVG needs no font and
- * renders the same in resvg and a browser. Bree Serif Light for the name and
+ * renders the same in resvg and a browser. Bree Serif Regular for the name and
  * Bree Light for the claim, the house typeface, at the sizes the other repos use.
  *
  * Deps (global): opentype.js, @resvg/resvg-js, and the house fonts as TTF in
@@ -53,7 +53,7 @@ const THEMES = [
 
 // The house typeface is licensed, so it is read from a local folder and never committed.
 const fonts = process.env.HOUSE_FONTS ?? join(process.env.LOCALAPPDATA ?? tmpdir(), "halleluja-fonts");
-const font = opentype.parse(readFileSync(join(fonts, "bree-serif-light.ttf")).buffer);
+const font = opentype.parse(readFileSync(join(fonts, "bree-serif-regular.ttf")).buffer);
 const claimFont = opentype.parse(readFileSync(join(fonts, "bree-light.ttf")).buffer);
 
 const nameAsc = font.ascender * (nameSize / font.unitsPerEm);
