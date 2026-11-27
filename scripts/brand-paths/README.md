@@ -14,6 +14,6 @@ Windows and Linux are from the `brands` set; `zip.txt` is `file-zipper` from the
 
 ## Trademarks
 
-Windows and Linux are trademarks of their owners. Each mark sits on the button
-that downloads for that platform, unmodified, and nothing here claims
-endorsement by or affiliation with either of them.
+Windows and Linux are trademarks of their owners, Microsoft and Linus Torvalds.
+Each mark sits on the button that downloads for that platform, unmodified, and
+nothing here claims endorsement by or affiliation with either of them.
