@@ -8,7 +8,7 @@ size.
 ## Sources and licences
 
 All three come from **Font Awesome Free 6.7.2**, <https://fontawesome.com>.
-Windows and Linux are from the `brands` set; `zip.txt` is `file-zipper` from the
+Windows and Linux are from the `brands` set, and `zip.txt` is `file-zipper` from the
 `solid` set and nobody's mark. Only the icons are used, and they are
 **CC BY 4.0**. Copyright 2024 Fonticons, Inc.
 
